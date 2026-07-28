@@ -26,10 +26,17 @@ export function errorHandler(error, _req, res, _next) {
     message = fields ? `${fields} already exists.` : "Duplicate record exists.";
   }
 
+  if (error.name === "MulterError") {
+    statusCode = 400;
+    message =
+      error.code === "LIMIT_FILE_SIZE"
+        ? "Image must be 12 MB or smaller."
+        : "The image upload could not be processed.";
+  }
+
   res.status(statusCode).json({
     message,
     statusCode,
     stack: process.env.NODE_ENV === "production" ? undefined : error.stack
   });
 }
-
