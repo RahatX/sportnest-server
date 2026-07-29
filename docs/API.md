@@ -11,6 +11,18 @@ the `sportnest_token` HTTP-only JWT cookie. Frontend requests must send credenti
 
 ## Auth Routes
 
+### POST `/register`
+
+Compatibility endpoint for the required SportNest API contract. It creates a
+Better Auth email/password account and accepts `name`, `email`, `photoURL` and
+`password`.
+
+### POST `/login`
+
+Compatibility endpoint for the required SportNest API contract. It signs in
+through Better Auth and sets both the Better Auth session cookie and the
+HTTP-only SportNest JWT cookie.
+
 ### POST `/auth/sign-up/email`
 
 Creates a Better Auth email/password account. Registration does not automatically

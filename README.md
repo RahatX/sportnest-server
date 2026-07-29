@@ -40,3 +40,12 @@ npm run dev
 ```
 
 The API runs at `http://localhost:5000/api`.
+
+## Facility Catalog Seed
+
+Set `SEED_OWNER_PASSWORD` to a private password before seeding a new database.
+The password is intentionally never stored in source control.
+
+```bash
+npm run seed:catalog
+```

@@ -14,9 +14,58 @@ function toPublicUser(user) {
   };
 }
 
+function copyAuthCookies(res, headers) {
+  const cookies =
+    typeof headers.getSetCookie === "function"
+      ? headers.getSetCookie()
+      : [headers.get("set-cookie")].filter(Boolean);
+
+  for (const cookie of cookies) {
+    res.append("Set-Cookie", cookie);
+  }
+}
+
 async function getBetterAuthSession(req) {
   return auth.api.getSession({
     headers: fromNodeHeaders(req.headers)
+  });
+}
+
+export async function register(req, res) {
+  const result = await auth.api.signUpEmail({
+    body: {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      image: req.body.photoURL || req.body.image
+    },
+    headers: fromNodeHeaders(req.headers),
+    returnHeaders: true,
+    returnStatus: true
+  });
+
+  copyAuthCookies(res, result.headers);
+  res.status(result.status || 200).json({
+    user: toPublicUser(result.response.user)
+  });
+}
+
+export async function login(req, res) {
+  const result = await auth.api.signInEmail({
+    body: {
+      email: req.body.email,
+      password: req.body.password,
+      rememberMe: true
+    },
+    headers: fromNodeHeaders(req.headers),
+    returnHeaders: true,
+    returnStatus: true
+  });
+
+  copyAuthCookies(res, result.headers);
+  setAuthCookie(res, createToken(result.response.user));
+  res.status(result.status || 200).json({
+    user: toPublicUser(result.response.user)
   });
 }
 
