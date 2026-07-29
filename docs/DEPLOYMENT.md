@@ -33,7 +33,7 @@ JWT_EXPIRES_IN=7d
 JWT_COOKIE_NAME=sportnest_token
 CLIENT_ORIGIN=https://your-vercel-domain.vercel.app
 COOKIE_SAME_SITE=none
-BETTER_AUTH_URL=https://your-render-service.onrender.com
+BETTER_AUTH_URL=https://your-vercel-domain.vercel.app
 BETTER_AUTH_SECRET=<second-long-random-secret>
 GOOGLE_CLIENT_ID=<google-oauth-client-id>
 GOOGLE_CLIENT_SECRET=<google-oauth-client-secret>
@@ -61,8 +61,9 @@ Environment variables:
 VITE_API_BASE_URL=https://your-render-service.onrender.com/api
 ```
 
-The included `client/vercel.json` rewrites every browser route to `index.html`, so
-reloading private and nested routes does not produce a Vercel 404.
+The included `client/vercel.json` proxies `/api/*` to Render before rewriting
+browser routes to `index.html`. This same-origin API proxy prevents browsers from
+blocking authentication and OAuth state cookies.
 
 ## 4. Update CORS After Vercel Deploys
 
@@ -95,7 +96,7 @@ In Google Cloud Console:
 1. Create an OAuth 2.0 Client ID for a Web application.
 2. Add `http://localhost:5173` and the Vercel URL to Authorized JavaScript Origins.
 3. Add `http://localhost:5000/api/auth/callback/google` as the local Authorized Redirect URI.
-4. Add `https://your-render-service.onrender.com/api/auth/callback/google` as the production redirect URI.
+4. Add `https://your-vercel-domain.vercel.app/api/auth/callback/google` as the production redirect URI.
 5. Put the Client ID and Client Secret only in the Render/server environment.
 6. Keep the OAuth app in testing mode and add the examiner/test Gmail accounts, or publish the app before submission.
 
