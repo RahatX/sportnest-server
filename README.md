@@ -26,7 +26,7 @@ provides secure identity, image-upload, search, filter, and reservation endpoint
 - ImgBB image upload endpoints
 - Helmet, CORS, rate limiting and centralized errors
 
-## Packages
+## NPM Packages Used
 
 Express, Mongoose, MongoDB, Better Auth, Better Auth MongoDB Adapter, JSON Web
 Token, Cookie Parser, CORS, Multer, Helmet, Express Rate Limit and Morgan.
